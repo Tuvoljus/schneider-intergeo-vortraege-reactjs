@@ -38,7 +38,9 @@ export const ScheduleTable = () => {
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
     const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
-    const [selectedSpeakers, setSelectedSpeakers] = useState<string[]>([]); // Neuer Zustand für Speaker
+    const [selectedSpeakers, setSelectedSpeakers] = useState<string[]>([]); 
+    const [selectedSoftwareTitles, setSelectedSoftwareTitles] = useState<string[]>([]);
+
 
     useEffect(() => {
         setCsvData(jsonData);
@@ -79,7 +81,7 @@ export const ScheduleTable = () => {
         }
     };
 
-    const handleSpeakerSelect = (speaker: string) => { // Neue Funktion für Speaker
+    const handleSpeakerSelect = (speaker: string) => { 
         if (selectedSpeakers.includes(speaker)) {
             setSelectedSpeakers(selectedSpeakers.filter(s => s !== speaker));
         } else {
@@ -87,9 +89,19 @@ export const ScheduleTable = () => {
         }
     };
 
+    const handleSoftwareTitleSelect = (title: string) => { 
+        if (selectedSoftwareTitles.includes(title)) {
+            setSelectedSoftwareTitles(selectedSoftwareTitles.filter(t => t !== title));
+        } else {
+            setSelectedSoftwareTitles([...selectedSoftwareTitles, title]);
+        }
+    };
+
     const uniqueTimes = Array.from(new Set(csvData.map(item => item.Date.split(" ")[1])));
     const uniqueCompanies = Array.from(new Set(csvData.map(item => item.Company)).values()).filter((company): company is string => company !== null);
-    const uniqueSpeakers = Array.from(new Set(csvData.map(item => item.Speaker)).values()).filter((speaker): speaker is string => speaker !== null); // Eindeutige Sprecher
+    const uniqueSpeakers = Array.from(new Set(csvData.map(item => item.Speaker)).values()).filter((speaker): speaker is string => speaker !== null); 
+    const uniqueSoftwareTitles = Array.from(new Set(csvData.map(item => item['Software / Title'])).values()).filter((title): title is string => title !== null);
+
 
     return (
         <Container>
@@ -116,12 +128,11 @@ export const ScheduleTable = () => {
                     </Navbar.Collapse> */}
                 </Container>
             </Navbar>
-            <h4>Filter Options</h4>
-            <Stack direction="horizontal" gap={3}>
-                {/* Placeholder for other filters */}
-            </Stack>
+            <div style={{ paddingTop: "1rem" }}>
+                <h5>Filter Options</h5>
+            </div>
 
-            <Swiper              
+            <Swiper
                 modules={[Pagination, Navigation, A11y]}
                 navigation={true}
                 spaceBetween={1}
@@ -130,19 +141,37 @@ export const ScheduleTable = () => {
                 pagination={{ clickable: true }}
             >
                 <SwiperSlide>
-                <Stack gap={2} style={{ marginBottom: "20px" }}>
-                {["24.09.2024", "25.09.2024", "26.09.2024"].map((day) => (
-                            <Badge
-                                key={day}
-                                pill
-                                style={{ cursor: "pointer", margin: "5px" }}
-                                onClick={() => handleDaySelect(day)}
-                                bg={selectedDays.includes(day) ? 'primary' : 'secondary'}
-                            >
-                                {day === "24.09.2024" ? "Dienstag" : day === "25.09.2024" ? "Mittwoch" : "Donnerstag"}
-                            </Badge>
-                        ))}
-                    </Stack>
+                    {/* <Stack  style={{ marginBottom: "20px" }}> */}
+                    <div className="fade-container">
+                        <div className="company-scroll">
+                            {["24.09.2024", "25.09.2024", "26.09.2024"].map((day) => (
+
+                                <div
+                                    key={day}
+                                    // className={`company-item ${selectedCompanies.includes(day) ? 'selected' : ''}`}
+                                    onClick={() => handleCompanySelect(day)}
+                                >
+                                    <Badge
+                                        onClick={() => handleDaySelect(day)}
+                                        style={{ cursor: "pointer" }}
+                                        bg={selectedDays.includes(day) ? 'primary' : 'secondary'}
+                                    >{day === "24.09.2024" ? "Dienstag" : day === "25.09.2024" ? "Mittwoch" : "Donnerstag"}</Badge>
+                                </div>
+                                // <Badge
+                                //     key={day}
+                                //     pill
+                                //     style={{ cursor: "pointer", margin: "3px" }}
+                                //     onClick={() => handleDaySelect(day)}
+                                //     bg={selectedDays.includes(day) ? 'primary' : 'secondary'}
+                                // >
+                                //     {day === "24.09.2024" ? "Dienstag" : day === "25.09.2024" ? "Mittwoch" : "Donnerstag"}
+                                // </Badge>
+
+
+                            ))}
+                        </div>
+                    </div>
+                    {/* </Stack> */}
                 </SwiperSlide>
 
                 <SwiperSlide>
@@ -192,6 +221,21 @@ export const ScheduleTable = () => {
                         </div>
                     </div>
                 </SwiperSlide>
+                <SwiperSlide>
+                    <div className="fade-container">
+                        <div className="software-title-scroll">
+                            {uniqueSoftwareTitles.map((title) => (
+                                <div
+                                    key={title}
+                                    className={`software-title-item ${selectedSoftwareTitles.includes(title) ? 'selected' : ''}`}
+                                    onClick={() => handleSoftwareTitleSelect(title)}
+                                >
+                                    {title}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </SwiperSlide>
             </Swiper>
 
             <Accordion defaultActiveKey="0" alwaysOpen>
@@ -203,21 +247,24 @@ export const ScheduleTable = () => {
                                 {day === "24.09.2024" ? `Dienstag, ${day}` : day === "25.09.2024" ? `Mittwoch, ${day}` : `Donnerstag, ${day}`}
                             </Accordion.Header>
                             <Accordion.Body>
-                                <Table responsive="md" striped bordered hover>
+                                <Table responsive="md" striped hover>
                                     <thead>
-                                        <tr>
+                                        <tr style={{ borderBlockColor: "#f0c905", borderBlockEndWidth: ".2rem" }}>
                                             <th>Time</th>
                                             <th>Company</th>
                                             <th>Software / Title</th>
                                             <th>Speaker</th>
                                         </tr>
                                     </thead>
+
                                     <tbody>
                                         {items
                                             .filter(item =>
                                                 (selectedCompanies.length === 0 || (item.Company && selectedCompanies.includes(item.Company))) &&
                                                 (selectedTimes.length === 0 || selectedTimes.includes(item.Date)) &&
-                                                (selectedSpeakers.length === 0 || (item.Speaker && selectedSpeakers.includes(item.Speaker))) // Filter für Speaker
+                                                (selectedSpeakers.length === 0 || (item.Speaker && selectedSpeakers.includes(item.Speaker))) &&
+                                                (selectedSoftwareTitles.length === 0 || (item['Software / Title'] && selectedSoftwareTitles.includes(item['Software / Title'])))
+
                                             )
                                             .map((item, index) => (
                                                 <tr key={index}>
@@ -235,7 +282,7 @@ export const ScheduleTable = () => {
                                                     <td>{item['Software / Title']}</td>
                                                     <td>{item.Speaker}</td>
                                                 </tr>
-                                            ))} 
+                                            ))}
                                     </tbody>
                                 </Table>
                             </Accordion.Body>
@@ -247,19 +294,19 @@ export const ScheduleTable = () => {
                 {`
                 .fade-container {
                     position: relative;
-                    height: 50px;
+                    height: 68px;
                     overflow: hidden;
                     margin: 10px 0;
                 }
 
-                .company-scroll, .time-scroll, .speaker-scroll {
+                .company-scroll, .time-scroll, .speaker-scroll, .software-title-scroll {
                     height: 100%;
                     overflow-y: auto;
                     padding: 10px 0;
                 }
 
-                .company-item, .time-item, .speaker-item {
-                    display: flex;
+                .company-item, .time-item, .speaker-item, .software-title-item {
+                    // display: flex;
                     align-items: center;
                     padding: 5px 10px;
                     cursor: pointer;
@@ -270,9 +317,10 @@ export const ScheduleTable = () => {
                     transition: background-color 0.3s, color 0.3s;
                 }
 
-                .company-item.selected, .time-item.selected, .speaker-item.selected {
-                    background-color: #007bff;
-                    color: #fff;
+                .company-item.selected, .time-item.selected, .speaker-item.selected, .software-title-item.selected {
+                    background-color:  #393939;
+                   
+                    color: #f0c905;
                 }
 
                 .fade-container::before,
@@ -281,7 +329,7 @@ export const ScheduleTable = () => {
                     position: absolute;
                     left: 0;
                     right: 0;
-                    height: 20px;
+                    height: 17px;
                     pointer-events: none;
                     background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
                     z-index: 1;
