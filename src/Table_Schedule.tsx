@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { ScheduleItem } from "./utils/utils";
 import jsonData from './data/schedule_2.json';
-import { Accordion, Badge, Container, Stack, Table } from "react-bootstrap";
+import { Accordion, Badge, Container, Navbar, Stack, Table } from "react-bootstrap";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, A11y } from 'swiper/modules';
+import { Navigation, Pagination, Scrollbar, A11y, EffectCards } from 'swiper/modules';
+
 
 import 'swiper/css';
+// import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+// import 'swiper/css/scrollbar';
+import 'swiper/css/effect-cards';
+// import './customWheel.css';
+// import './customSwiper.css';
 
 import RhinoTerrain from './data/logos/rhinoterrain-sas-logo.png';
 import trimble from './data/logos/trimble.png';
@@ -32,6 +38,7 @@ export const ScheduleTable = () => {
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
     const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
+    const [selectedSpeakers, setSelectedSpeakers] = useState<string[]>([]); // Neuer Zustand für Speaker
 
     useEffect(() => {
         setCsvData(jsonData);
@@ -72,27 +79,58 @@ export const ScheduleTable = () => {
         }
     };
 
-    // Unique times extracted from the data
-    const uniqueTimes = Array.from(new Set(csvData.map(item => item.Date.split(" ")[1])));
+    const handleSpeakerSelect = (speaker: string) => { // Neue Funktion für Speaker
+        if (selectedSpeakers.includes(speaker)) {
+            setSelectedSpeakers(selectedSpeakers.filter(s => s !== speaker));
+        } else {
+            setSelectedSpeakers([...selectedSpeakers, speaker]);
+        }
+    };
 
+    const uniqueTimes = Array.from(new Set(csvData.map(item => item.Date.split(" ")[1])));
     const uniqueCompanies = Array.from(new Set(csvData.map(item => item.Company)).values()).filter((company): company is string => company !== null);
+    const uniqueSpeakers = Array.from(new Set(csvData.map(item => item.Speaker)).values()).filter((speaker): speaker is string => speaker !== null); // Eindeutige Sprecher
 
     return (
         <Container>
+            <Navbar expand="lg" className="bg-body-tertiary">
+                <Container>
+                    <Navbar.Brand href="#home">Präsentations-Timetable</Navbar.Brand>
+                    {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+            <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#link">Link</Nav.Link>
+            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown>
+          </Nav>
+                    </Navbar.Collapse> */}
+                </Container>
+            </Navbar>
             <h4>Filter Options</h4>
             <Stack direction="horizontal" gap={3}>
                 {/* Placeholder for other filters */}
             </Stack>
 
             <Swiper
-                modules={[Pagination, A11y]}
+                modules={[Pagination, Navigation, A11y]}
+                navigation={true}
                 spaceBetween={1}
                 slidesPerView={3}
                 grabCursor={true}
                 pagination={{ clickable: true }}
             >
                 <SwiperSlide>
-                    <Stack gap={2}>
+                    <Stack gap={2} style={{ marginBottom: "20px" }}>
                         {["24.09.2024", "25.09.2024", "26.09.2024"].map((day) => (
                             <Badge
                                 key={day}
@@ -138,6 +176,22 @@ export const ScheduleTable = () => {
                         </div>
                     </div>
                 </SwiperSlide>
+
+                <SwiperSlide>
+                    <div className="fade-container">
+                        <div className="speaker-scroll">
+                            {uniqueSpeakers.map((speaker) => (
+                                <div
+                                    key={speaker}
+                                    className={`speaker-item ${selectedSpeakers.includes(speaker) ? 'selected' : ''}`}
+                                    onClick={() => handleSpeakerSelect(speaker)}
+                                >
+                                    {speaker}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </SwiperSlide>
             </Swiper>
 
             <Accordion defaultActiveKey="0" alwaysOpen>
@@ -162,7 +216,8 @@ export const ScheduleTable = () => {
                                         {items
                                             .filter(item =>
                                                 (selectedCompanies.length === 0 || (item.Company && selectedCompanies.includes(item.Company))) &&
-                                                (selectedTimes.length === 0 || selectedTimes.includes(item.Date))
+                                                (selectedTimes.length === 0 || selectedTimes.includes(item.Date)) &&
+                                                (selectedSpeakers.length === 0 || (item.Speaker && selectedSpeakers.includes(item.Speaker))) // Filter für Speaker
                                             )
                                             .map((item, index) => (
                                                 <tr key={index}>
@@ -197,13 +252,13 @@ export const ScheduleTable = () => {
                     margin: 10px 0;
                 }
 
-                .company-scroll, .time-scroll {
+                .company-scroll, .time-scroll, .speaker-scroll {
                     height: 100%;
                     overflow-y: auto;
                     padding: 10px 0;
                 }
 
-                .company-item, .time-item {
+                .company-item, .time-item, .speaker-item {
                     display: flex;
                     align-items: center;
                     padding: 5px 10px;
@@ -215,7 +270,7 @@ export const ScheduleTable = () => {
                     transition: background-color 0.3s, color 0.3s;
                 }
 
-                .company-item.selected, .time-item.selected {
+                .company-item.selected, .time-item.selected, .speaker-item.selected {
                     background-color: #007bff;
                     color: #fff;
                 }
