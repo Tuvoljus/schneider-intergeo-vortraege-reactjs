@@ -121,7 +121,7 @@ export const ScheduleTable = () => {
                 {/* Placeholder for other filters */}
             </Stack>
 
-            <Swiper
+            <Swiper              
                 modules={[Pagination, Navigation, A11y]}
                 navigation={true}
                 spaceBetween={1}
@@ -130,8 +130,8 @@ export const ScheduleTable = () => {
                 pagination={{ clickable: true }}
             >
                 <SwiperSlide>
-                    <Stack gap={2} style={{ marginBottom: "20px" }}>
-                        {["24.09.2024", "25.09.2024", "26.09.2024"].map((day) => (
+                <Stack gap={2} style={{ marginBottom: "20px" }}>
+                {["24.09.2024", "25.09.2024", "26.09.2024"].map((day) => (
                             <Badge
                                 key={day}
                                 pill
@@ -235,7 +235,7 @@ export const ScheduleTable = () => {
                                                     <td>{item['Software / Title']}</td>
                                                     <td>{item.Speaker}</td>
                                                 </tr>
-                                            ))}
+                                            ))} 
                                     </tbody>
                                 </Table>
                             </Accordion.Body>
