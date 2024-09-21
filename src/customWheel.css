@@ -1,0 +1,99 @@
+.c-cont {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5%;
+  }
+  
+  .circle {
+      width: 300px;
+      height: 200px;
+      border-radius: 5%;
+      border: 3px solid black;
+      overflow: hidden;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:center;
+    height: 100%;
+  }
+  
+  .dropdown > section.highlight {
+    font-size: 30px;
+    color: black;
+    margin-top: 10%;
+    margin-bottom: 10%;
+  }
+  
+  .dropdown {
+    font-size: 20px;
+    text-align: center;
+    color: #666769;
+    overflow: hidden;
+    height: 70%;
+    scroll-snap-type: y mandatory;
+  
+    scrollbar-width: none;  /* Firefox */  
+  }
+  
+  .dropdown > section:first-child {
+    margin-top: 85%;
+  }
+  
+  .dropdown > section {
+    margin: 0 0px 50%;
+    scroll-snap-align: center;
+  }
+  
+  .dropdown::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .controls {
+    margin-left: 20px;
+  }
+  
+  .up {
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid black;
+    margin-bottom: 15px;
+  }
+  
+  .down {
+    width: 0; 
+    height: 0; 
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid black;
+  }
+  
+  .navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .button {
+    border: 2px solid black;
+    text-align: center;
+    border-radius: 2px;
+    font-size: 20px;
+    padding: 20px;
+    position: relative;
+    right: 25px;
+    margin: 25px 0 25px; 
+  }
+  
+  .music-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
