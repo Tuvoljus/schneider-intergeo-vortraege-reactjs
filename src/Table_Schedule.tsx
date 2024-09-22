@@ -226,7 +226,7 @@ export const ScheduleTable = () => {
                                 <div
                                     key={day}
                                     className={`company-item ${selectedCompanies.includes(day) ? 'selected' : ''}`}
-                                    onClick={() => handleCompanySelect(day)}
+                                    onClick={() => handleDaySelect(day)}
                                 >
                                     {/* <Badge
                                         onClick={() => handleDaySelect(day)}
