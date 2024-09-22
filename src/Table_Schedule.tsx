@@ -158,6 +158,7 @@ export const ScheduleTable = () => {
                 spaceBetween={1}
                 slidesPerView={3}
                 grabCursor={true}
+                scrollbar={{ draggable: true }}
                 pagination={{ clickable: true }}
             >
                 {showOverlay && (
@@ -171,7 +172,7 @@ export const ScheduleTable = () => {
                         </div>
                     </div>
                 )}
-                <SwiperSlide>
+                <SwiperSlide draggable>
                     <span className="filter-titel">Software / Title</span>
                     <div className="fade-container">
                         <div className="software-title-scroll">
@@ -246,11 +247,11 @@ export const ScheduleTable = () => {
                     <div className="fade-container">
                         <div className="company-scroll">
                             {["24.09.2024", "25.09.2024", "26.09.2024"].map((day) => (
-
                                 <div
                                     key={day}
-                                    className={`company-item ${selectedCompanies.includes(day) ? 'selected' : ''}`}
+                                    className={`company-item ${selectedDays.includes(day) ? 'selected' : ''}`}
                                     onClick={() => handleDaySelect(day)}
+                                    
                                 >
                                     {/* <Badge
                                         onClick={() => handleDaySelect(day)}
