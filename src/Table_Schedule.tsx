@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ScheduleItem } from "./utils/utils";
 import jsonData from './data/schedule_2.json';
 import { Accordion, Badge, Container, Navbar, Stack, Table } from "react-bootstrap";
+import { FaRegHandPointUp } from "react-icons/fa";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Scrollbar, A11y, EffectCards } from 'swiper/modules';
@@ -40,11 +41,23 @@ export const ScheduleTable = () => {
     const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
     const [selectedSpeakers, setSelectedSpeakers] = useState<string[]>([]);
     const [selectedSoftwareTitles, setSelectedSoftwareTitles] = useState<string[]>([]);
+    const [showOverlay, setShowOverlay] = useState(true); // State for the overlay
 
 
     useEffect(() => {
         setCsvData(jsonData);
+
+        // Hide the overlay after a few seconds
+        const timer = setTimeout(() => {
+            setShowOverlay(false);
+        }, 5000); // Adjust the time as needed
+
+        return () => clearTimeout(timer);
     }, []);
+
+    // useEffect(() => {
+    //     setCsvData(jsonData);
+    // }, []);
 
     const groupedData = csvData.reduce((acc, item) => {
         const [day, time] = item.Date.split(" ");
@@ -105,7 +118,7 @@ export const ScheduleTable = () => {
 
     return (
         <Container>
-            <Navbar expand="lg"  style={{  backgroundColor: "#393939" }}>
+            <Navbar expand="lg" style={{ backgroundColor: "#393939" }}>
                 <Container>
                     <h2><b style={{ color: "#f0c905" }}>Präsentations-Timetable</b></h2>
                     {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -147,6 +160,17 @@ export const ScheduleTable = () => {
                 grabCursor={true}
                 pagination={{ clickable: true }}
             >
+                {showOverlay && (
+                    <div className="icon-overlay" style={{ marginTop: "30px" }}>
+                        <div className="icon">
+                            {/* Replace this with your desired icon */}
+                            {/* <span role="img" aria-label="icon">✨</span> */}
+                            <span role="img" aria-label="icon">
+                                <FaRegHandPointUp />
+                            </span>
+                        </div>
+                    </div>
+                )}
                 <SwiperSlide>
                     <span className="filter-titel">Software / Title</span>
                     <div className="fade-container">
@@ -182,7 +206,7 @@ export const ScheduleTable = () => {
                 </SwiperSlide>
 
                 <SwiperSlide>
-                <span className="filter-titel">Time</span>
+                    <span className="filter-titel">Time</span>
 
                     <div className="fade-container">
                         <div className="time-scroll">
@@ -200,7 +224,7 @@ export const ScheduleTable = () => {
                 </SwiperSlide>
 
                 <SwiperSlide>
-                <span className="filter-titel">Speaker</span>
+                    <span className="filter-titel">Speaker</span>
                     <div className="fade-container">
                         <div className="speaker-scroll">
                             {uniqueSpeakers.map((speaker) => (
@@ -318,6 +342,41 @@ export const ScheduleTable = () => {
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(45deg, #f0d653,  #f0c905);
+}
+
+.icon-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;    
+}
+
+.icon {
+    font-size: 2em;
+    animation: moveIcon 12s ease-in-out infinite;
+}
+
+@keyframes moveIcon {
+    0%, 10%, 20%, 30%, 40%, 50%, 60%, 70%, 80%, 90%, 100% {
+        transform: translate(-50%, -50%);
+    }
+    5% {
+        transform: translate(30px, -50%);  /* Move right */
+    }
+    15% {
+        transform: translate(-60px, -50%); /* Move left */
+    }
+    25% {
+        transform: translate(-50%, -40px); /* Move up */
+    }
+    40% {
+        transform: translate(-50%, 20px);  /* Move down */
+    }
 }
 
 .filter-titel {
