@@ -379,6 +379,15 @@ export const ScheduleTable = () => {
     }
 }
 
+.swiper-button-prev, .swiper-button-next {
+color: #f0c905 !important;
+                    margin-top: -10px
+}
+
+.swiper-button-prev:after, .swiper-button-next:after { 
+font-size: 25px !important
+}
+
 .filter-titel {
 font-size: 0.8em
 }
