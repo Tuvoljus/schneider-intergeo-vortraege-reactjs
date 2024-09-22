@@ -38,7 +38,7 @@ export const ScheduleTable = () => {
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
     const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
-    const [selectedSpeakers, setSelectedSpeakers] = useState<string[]>([]); 
+    const [selectedSpeakers, setSelectedSpeakers] = useState<string[]>([]);
     const [selectedSoftwareTitles, setSelectedSoftwareTitles] = useState<string[]>([]);
 
 
@@ -81,7 +81,7 @@ export const ScheduleTable = () => {
         }
     };
 
-    const handleSpeakerSelect = (speaker: string) => { 
+    const handleSpeakerSelect = (speaker: string) => {
         if (selectedSpeakers.includes(speaker)) {
             setSelectedSpeakers(selectedSpeakers.filter(s => s !== speaker));
         } else {
@@ -89,7 +89,7 @@ export const ScheduleTable = () => {
         }
     };
 
-    const handleSoftwareTitleSelect = (title: string) => { 
+    const handleSoftwareTitleSelect = (title: string) => {
         if (selectedSoftwareTitles.includes(title)) {
             setSelectedSoftwareTitles(selectedSoftwareTitles.filter(t => t !== title));
         } else {
@@ -99,15 +99,15 @@ export const ScheduleTable = () => {
 
     const uniqueTimes = Array.from(new Set(csvData.map(item => item.Date.split(" ")[1])));
     const uniqueCompanies = Array.from(new Set(csvData.map(item => item.Company)).values()).filter((company): company is string => company !== null);
-    const uniqueSpeakers = Array.from(new Set(csvData.map(item => item.Speaker)).values()).filter((speaker): speaker is string => speaker !== null); 
+    const uniqueSpeakers = Array.from(new Set(csvData.map(item => item.Speaker)).values()).filter((speaker): speaker is string => speaker !== null);
     const uniqueSoftwareTitles = Array.from(new Set(csvData.map(item => item['Software / Title'])).values()).filter((title): title is string => title !== null);
 
 
     return (
         <Container>
-            <Navbar expand="lg" className="bg-body-tertiary">
+            <Navbar expand="lg"  style={{  backgroundColor: "#393939" }}>
                 <Container>
-                    <Navbar.Brand href="#home">Präsentations-Timetable</Navbar.Brand>
+                    <h2><b style={{ color: "#f0c905" }}>Präsentations-Timetable</b></h2>
                     {/* <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
@@ -128,9 +128,16 @@ export const ScheduleTable = () => {
                     </Navbar.Collapse> */}
                 </Container>
             </Navbar>
-            <div style={{ paddingTop: "1rem" }}>
-                <h5>Filter Options</h5>
-            </div>
+            <Stack direction="horizontal" style={{ backgroundColor: "#f0c905", paddingLeft: "1rem", marginTop: ".8rem", marginBottom: ".8rem", paddingTop: ".5rem" }}>
+                <div >
+                    <h5>Partner-Präsentationen auf unserem Stand
+                    </h5>
+                </div>
+            </Stack>
+            <Stack direction="horizontal">
+                <span style={{ fontSize: ".9em", }}>Filter Optionen:</span>
+            </Stack>
+
 
             <Swiper
                 modules={[Pagination, Navigation, A11y]}
@@ -141,21 +148,92 @@ export const ScheduleTable = () => {
                 pagination={{ clickable: true }}
             >
                 <SwiperSlide>
+                    <span className="filter-titel">Software / Title</span>
+                    <div className="fade-container">
+                        <div className="software-title-scroll">
+                            {uniqueSoftwareTitles.map((title) => (
+                                <div
+                                    key={title}
+                                    className={`software-title-item ${selectedSoftwareTitles.includes(title) ? 'selected' : ''}`}
+                                    onClick={() => handleSoftwareTitleSelect(title)}
+                                >
+                                    {title}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                    <span className="filter-titel">Company</span>
+                    <div className="fade-container">
+                        <div className="company-scroll">
+                            {uniqueCompanies.map((company) => (
+                                <div
+                                    key={company}
+                                    className={`company-item ${selectedCompanies.includes(company) ? 'selected' : ''}`}
+                                    onClick={() => handleCompanySelect(company)}
+                                >
+                                    {company}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                <span className="filter-titel">Time</span>
+
+                    <div className="fade-container">
+                        <div className="time-scroll">
+                            {uniqueTimes.map((time) => (
+                                <div
+                                    key={time}
+                                    className={`time-item ${selectedTimes.includes(time) ? 'selected' : ''}`}
+                                    onClick={() => handleTimeSelect(time)}
+                                >
+                                    {time}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </SwiperSlide>
+
+                <SwiperSlide>
+                <span className="filter-titel">Speaker</span>
+                    <div className="fade-container">
+                        <div className="speaker-scroll">
+                            {uniqueSpeakers.map((speaker) => (
+                                <div
+                                    key={speaker}
+                                    className={`speaker-item ${selectedSpeakers.includes(speaker) ? 'selected' : ''}`}
+                                    onClick={() => handleSpeakerSelect(speaker)}
+                                >
+                                    {speaker}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </SwiperSlide>
+                <SwiperSlide>
                     {/* <Stack  style={{ marginBottom: "20px" }}> */}
+                    <span className="filter-titel">Day</span>
+
                     <div className="fade-container">
                         <div className="company-scroll">
                             {["24.09.2024", "25.09.2024", "26.09.2024"].map((day) => (
 
                                 <div
                                     key={day}
-                                    // className={`company-item ${selectedCompanies.includes(day) ? 'selected' : ''}`}
+                                    className={`company-item ${selectedCompanies.includes(day) ? 'selected' : ''}`}
                                     onClick={() => handleCompanySelect(day)}
                                 >
-                                    <Badge
+                                    {/* <Badge
                                         onClick={() => handleDaySelect(day)}
                                         style={{ cursor: "pointer" }}
                                         bg={selectedDays.includes(day) ? 'primary' : 'secondary'}
-                                    >{day === "24.09.2024" ? "Dienstag" : day === "25.09.2024" ? "Mittwoch" : "Donnerstag"}</Badge>
+                                    >{day === "24.09.2024" ? "Dienstag" : day === "25.09.2024" ? "Mittwoch" : "Donnerstag"}</Badge> */}
+                                    {day === "24.09.2024" ? "Dienstag" : day === "25.09.2024" ? "Mittwoch" : "Donnerstag"}
                                 </div>
                                 // <Badge
                                 //     key={day}
@@ -174,68 +252,6 @@ export const ScheduleTable = () => {
                     {/* </Stack> */}
                 </SwiperSlide>
 
-                <SwiperSlide>
-                    <div className="fade-container">
-                        <div className="company-scroll">
-                            {uniqueCompanies.map((company) => (
-                                <div
-                                    key={company}
-                                    className={`company-item ${selectedCompanies.includes(company) ? 'selected' : ''}`}
-                                    onClick={() => handleCompanySelect(company)}
-                                >
-                                    {company}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </SwiperSlide>
-
-                <SwiperSlide>
-                    <div className="fade-container">
-                        <div className="time-scroll">
-                            {uniqueTimes.map((time) => (
-                                <div
-                                    key={time}
-                                    className={`time-item ${selectedTimes.includes(time) ? 'selected' : ''}`}
-                                    onClick={() => handleTimeSelect(time)}
-                                >
-                                    {time}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </SwiperSlide>
-
-                <SwiperSlide>
-                    <div className="fade-container">
-                        <div className="speaker-scroll">
-                            {uniqueSpeakers.map((speaker) => (
-                                <div
-                                    key={speaker}
-                                    className={`speaker-item ${selectedSpeakers.includes(speaker) ? 'selected' : ''}`}
-                                    onClick={() => handleSpeakerSelect(speaker)}
-                                >
-                                    {speaker}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                    <div className="fade-container">
-                        <div className="software-title-scroll">
-                            {uniqueSoftwareTitles.map((title) => (
-                                <div
-                                    key={title}
-                                    className={`software-title-item ${selectedSoftwareTitles.includes(title) ? 'selected' : ''}`}
-                                    onClick={() => handleSoftwareTitleSelect(title)}
-                                >
-                                    {title}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </SwiperSlide>
             </Swiper>
 
             <Accordion defaultActiveKey="0" alwaysOpen>
@@ -292,6 +308,22 @@ export const ScheduleTable = () => {
 
             <style>
                 {`
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 8px rgba(215, 164, 21, 0.3);
+}
+
+::-webkit-scrollbar {
+  width: .5em;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #f0d653,  #f0c905);
+}
+
+.filter-titel {
+font-size: 0.8em
+}
+
                 .fade-container {
                     position: relative;
                     height: 68px;
