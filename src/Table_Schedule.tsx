@@ -154,12 +154,13 @@ export const ScheduleTable = () => {
 
             <Swiper
                 modules={[Pagination, Navigation, A11y]}
-                navigation={true}
+                // navigation={true}
                 spaceBetween={1}
                 slidesPerView={3}
                 grabCursor={true}
                 scrollbar={{ draggable: true }}
                 pagination={{ clickable: true }}
+                style={{ paddingBottom:"1rem" }}
             >
                 {showOverlay && (
                     <div className="icon-overlay" style={{ marginTop: "30px" }}>
@@ -172,7 +173,7 @@ export const ScheduleTable = () => {
                         </div>
                     </div>
                 )}
-                <SwiperSlide draggable>
+                <SwiperSlide draggable style={{ paddingTop: "1rem", paddingBottom: "1rem" }}>
                     <span className="filter-titel">Software / Title</span>
                     <div className="fade-container">
                         <div className="software-title-scroll">
@@ -189,7 +190,7 @@ export const ScheduleTable = () => {
                     </div>
                 </SwiperSlide>
 
-                <SwiperSlide>
+                <SwiperSlide style={{ paddingTop: "1rem", paddingBottom: "1rem" }}>
                     <span className="filter-titel">Company</span>
                     <div className="fade-container">
                         <div className="company-scroll">
@@ -206,7 +207,7 @@ export const ScheduleTable = () => {
                     </div>
                 </SwiperSlide>
 
-                <SwiperSlide>
+                <SwiperSlide style={{ paddingTop: "1rem", paddingBottom: "1rem" }}>
                     <span className="filter-titel">Time</span>
 
                     <div className="fade-container">
@@ -224,7 +225,7 @@ export const ScheduleTable = () => {
                     </div>
                 </SwiperSlide>
 
-                <SwiperSlide>
+                <SwiperSlide style={{ paddingTop: "1rem", paddingBottom: "1rem" }}>
                     <span className="filter-titel">Speaker</span>
                     <div className="fade-container">
                         <div className="speaker-scroll">
@@ -240,7 +241,7 @@ export const ScheduleTable = () => {
                         </div>
                     </div>
                 </SwiperSlide>
-                <SwiperSlide>
+                <SwiperSlide style={{ paddingTop: "1rem", paddingBottom: "1rem" }}>
                     {/* <Stack  style={{ marginBottom: "20px" }}> */}
                     <span className="filter-titel">Day</span>
 
@@ -397,7 +398,7 @@ font-size: 0.8em
                     position: relative;
                     height: 68px;
                     overflow: hidden;
-                    margin: 10px 0;
+                    margin: 10px 0;                    
                 }
 
                 .company-scroll, .time-scroll, .speaker-scroll, .software-title-scroll {
