@@ -1,0 +1,20 @@
+
+
+$accordion-button-active-bg:  #f8dd54c3;
+$accordion-border-color:  #f8dd5478;
+
+$accordion-color:  #393939 !important;
+
+// $accordion-btn-focus-box-shadow: red;
+
+.accordion-button {
+    &:focus {
+      box-shadow: 0 0 0 0.1rem rgba(240, 201, 5) !important; // Überschreibt den Focus box-shadow
+    }
+  
+    
+  }
+
+
+
+@import "~bootstrap/scss/bootstrap.scss";

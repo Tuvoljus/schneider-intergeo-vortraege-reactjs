@@ -1,0 +1,147 @@
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 8px rgba(215, 164, 21, 0.3);
+}
+
+::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #f0d653, #f0c905);
+}
+
+/* body {
+  scrollbar-width: thin;
+  scrollbar-color: #f0c905 rgba(215, 164, 21, 0.3);
+} */
+
+.icon-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.icon {
+  font-size: 2em;
+  animation: moveIcon 12s ease-in-out infinite;
+}
+
+@keyframes moveIcon {
+  0%,
+  10%,
+  20%,
+  30%,
+  40%,
+  50%,
+  60%,
+  70%,
+  80%,
+  90%,
+  100% {
+    transform: translate(-50%, -50%);
+  }
+  5% {
+    transform: translate(30px, -50%); /* Move right */
+  }
+  15% {
+    transform: translate(-60px, -50%); /* Move left */
+  }
+  25% {
+    transform: translate(-50%, -40px); /* Move up */
+  }
+  40% {
+    transform: translate(-50%, 20px); /* Move down */
+  }
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: #f0c905 !important;
+  margin-top: -10px;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+  font-size: 25px !important;
+}
+
+/* .accordion-button:not(.collapsed) {
+  background-color: #f0c90578 !important;
+  color: #393939;
+} */
+
+.filter-titel {
+  font-size: 0.8em;
+}
+
+.fade-container {
+  position: relative;
+  height: 68px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+
+.company-scroll,
+.time-scroll,
+.speaker-scroll,
+.software-title-scroll {
+  height: 100%;
+  overflow-y: auto;
+  padding: 10px 0;
+}
+
+.company-item,
+.time-item,
+.speaker-item,
+.software-title-item {
+  /* display: flex; */
+  align-items: center;
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  color: #000;
+  border-radius: 5px;
+  margin-bottom: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.company-item.selected,
+.time-item.selected,
+.speaker-item.selected,
+.software-title-item.selected {
+  background-color: #393939;
+
+  color: #f0c905;
+}
+
+.fade-container::before,
+.fade-container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 17px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
+  z-index: 1;
+}
+
+.fade-container::after {
+  top: auto;
+  bottom: 0;
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1),
+    rgba(255, 255, 255, 0)
+  );
+}
